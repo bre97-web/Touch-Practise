@@ -1,16 +1,15 @@
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
     data() {
         return {
-            key: undefined,
-            score: 0,
-            result: 0,
-            combo: 0,
         }
     },
     computed: {
+        ...mapState('ScoreStore', {
+            value: state => state.value
+        }),
         ...mapGetters('TouchStore', ['get', 'getFirst']),
     },
     methods: {
@@ -24,19 +23,15 @@ export default {
             }
 
             if(this.key != this.getFirst) {
-                this.combo = 0
+                this.value.combo = 0
                 return
             }
 
-            this.combo ++
-            this.score ++
-            this.result = this.combo * 0.01 + this.score * 0.1 + this.result
+            this.value.combo ++
+            this.value.score ++
+            this.value.result += this.value.combo * 0.01 + this.value.score * 0.01
 
             this.removeFirst()
-
-            setTimeout(() => {
-                this.key = undefined                
-            }, 50);
         },
 
         isKey(key) {
@@ -47,25 +42,17 @@ export default {
             return false
         }
     },
+    mounted() {
+        this.$nextTick(() => {
+            this.$refs.input.focus()
+        });
+    },
 }
 </script>
 
 <template>
     <div>
-        <input @keydown="apply" placeholder="Click to start" />
-
-        <div class="w-full flex gap-16 items-center justify-center">
-            <div class="flex-grow">
-                <h1>COMBO</h1>
-                <h1>SCORE</h1>
-                <h1>RESULT</h1>
-            </div>
-            <div >
-                <h1 :class="{'scale':this.key != undefined}">{{ combo }}</h1>
-                <h1>{{ score }}</h1>
-                <h1>{{ result.toFixed(3) }}</h1>
-            </div>
-        </div>
+        <input ref="input" @keydown="apply" placeholder="Click to start" />
     </div>
 </template>
 
