@@ -15,6 +15,10 @@ const Router = createRouter({
             path: '/limit',
             component: () => import('../views/limit.vue'),
         },
+        {
+            path: '/space',
+            component: () => import('../views/space.vue'),
+        },
     ],
 })
 

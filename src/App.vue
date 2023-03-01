@@ -1,12 +1,8 @@
 <script>
-import Next from './components/next.vue'
-import Operate from './components/operate.vue'
 import Header from './components/header.vue'
 
 export default {
     components: {
-        Next,
-        Operate,
         Header,
     }
 }

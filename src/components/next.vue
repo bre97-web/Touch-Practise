@@ -1,21 +1,10 @@
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
     computed: {
         ...mapGetters('TouchStore', ['get']),
     },
-    methods: {
-        ...mapActions('TouchStore', ['create', 'addition']),
-    },
-    beforeMount() {
-        this.create(64)
-    },
-    beforeUpdate() {
-        if(this.get.length <= 12) {
-            this.addition(32)
-        }
-    }
 }
 </script>
 
@@ -26,7 +15,15 @@ export default {
             <li v-for="e in get">
                 <i class="material-icons" :class="{'bg-green-200': e == 37, 'bg-red-200': e == 38, 'bg-yellow-200': e == 39, 'bg-blue-200': e == 40}">
                     {{ 
-                    e == 37 ? 'keyboard_arrow_left' : e == 38 ? 'arrow_upward' : e == 39 ? 'keyboard_arrow_right' : 'arrow_downward'   
+                    e == 37 ? 
+                        'keyboard_arrow_left' :
+                        e == 38 ? 
+                            'arrow_upward' : 
+                            e == 39 ? 
+                                'keyboard_arrow_right' :
+                                e == 40 ?
+                                    'arrow_downward' :
+                                    'trip_origin'
                     }}
                 </i>
             </li>

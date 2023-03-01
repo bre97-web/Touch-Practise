@@ -7,6 +7,9 @@
             <li>
                 <router-link class="link" to="/limit">30s</router-link>
             </li>
+            <li>
+                <router-link class="link" to="/space">Space</router-link>
+            </li>
         </ul>
     </div>
 </template>

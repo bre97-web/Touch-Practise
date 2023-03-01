@@ -1,28 +1,26 @@
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
-    data() {
-        return {
-        }
-    },
     computed: {
         ...mapState('ScoreStore', {
             value: state => state.value
         }),
-        ...mapGetters('TouchStore', ['get', 'getFirst']),
+        ...mapGetters('TouchStore', ['getFirst']),
     },
     methods: {
-        ...mapActions('TouchStore', ['create', 'addition', 'removeFirst']),
+        ...mapActions('TouchStore', ['removeFirst']),
 
+        /**
+         * 传入一个键盘事件的keyCode。
+         * @param {Nuumber} e 
+         */
         apply(e) {
-            this.key = window.event ? e.keyCode : e.which
-
-            if(!this.isKey(this.key)) {
+            if(!this.isKey(e)) {
                 return
             }
 
-            if(this.key != this.getFirst) {
+            if(e != this.getFirst) {
                 this.value.combo = 0
                 return
             }
@@ -34,8 +32,13 @@ export default {
             this.removeFirst()
         },
 
+        /**
+         * 如果参数可以映射为键盘上的 Left、Up、Right、Down、Space则返回true。
+         * @param {Number} key 
+         * @returns Boolean
+         */
         isKey(key) {
-            if(key == 37 || key == 38 || key == 39 || key == 40) {
+            if(key == 37 || key == 38 || key == 39 || key == 40 || key == 32) {
                 return true
             }
 
@@ -43,35 +46,22 @@ export default {
         }
     },
     mounted() {
-        this.$nextTick(() => {
-            this.$refs.input.focus()
-        });
+        document.onkeydown = (e) => {
+            
+            if(this.isKey(e.keyCode)) {
+                this.apply(e.keyCode)
+            }
+            e.preventDefault()
+        }
+    },
+    beforeUnmount() {
+        document.onkeydown = null
     },
 }
 </script>
 
 <template>
     <div>
-        <input ref="input" @keydown="apply" placeholder="Click to start" />
+        
     </div>
 </template>
-
-<style scoped lang="css">
-    input {
-        @apply w-full h-10 border outline-none;
-    }
-    h1 {
-        @apply font-black text-4xl;
-    }
-    .scale {
-        animation: scale 0.1s;
-    }
-    @keyframes scale {
-        from {
-            transform: scale(150%);
-        } to {
-            transform: scale(100%);
-
-        }
-    }
-</style>

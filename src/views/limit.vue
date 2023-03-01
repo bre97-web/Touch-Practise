@@ -2,11 +2,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import Next from '../components/next.vue'
 import Operate from '../components/operate.vue'
+import Score from '../components/score.vue'
 
 export default {
     components: {
         Next,
-        Operate
+        Operate,
+        Score,
     },
     data() {
         return {
@@ -15,7 +17,13 @@ export default {
         }
     },
     computed: {
-        ...mapGetters('ScoreStore', ['get']),
+        ...mapGetters('TouchStore', ['get']),
+        
+        leftOffset() {
+            return {
+                left: this.countdown * 3 - 100 + '%'
+            }
+        },
     },
     watch: {
         countdown: {
@@ -27,16 +35,21 @@ export default {
                 }
             },
         },
+        get: {
+            deep: true,
+            handler() {
+                if(this.get.length <= 16) {
+                    this.addition(48)
+                }
+            },
+        },
     },
     methods: {
         ...mapActions('ScoreStore', ['set']),
+        ...mapActions('TouchStore', ['create', 'addition', 'additionOther']),
     },
-    created() {
-        this.set({
-            score: 0,
-            combo: 0,
-            result: 0,
-        })
+    beforeMount() {
+        this.create(64)
     },
     mounted() {
         this.timer = setInterval(() => {
@@ -54,25 +67,15 @@ export default {
         </header>
 
         <main>
-            <Next />
+            <Next :class="{'grayscale': countdown <= 0}" />
             <Operate v-if="!isClose" />
 
-            <div class="rounded-full overflow-clip h-10">
-                <progress max="30" :value="countdown" class="w-full h-full"></progress>
+            <div class="relative rounded-full h-10">
+                <!-- <progress max="30" :value="countdown" class="w-full h-full"></progress> -->
+                <div class="progress" :class="{'bg-green-500': countdown > 20 && countdown <= 30, 'bg-orange-500': countdown > 10 && countdown <= 20, 'bg-red-500' : countdown <= 10}" :style="leftOffset"></div>
             </div>
 
-            <div class="w-full flex gap-16 items-center justify-center">
-                <div class="flex-grow">
-                    <h1>COMBO</h1>
-                    <h1>SCORE</h1>
-                    <h1>RESULT</h1>
-                </div>
-                <div>
-                    <h1>{{ get.combo }}</h1>
-                    <h1>{{ get.score }}</h1>
-                    <h1>{{ get.result.toFixed(3) }}</h1>
-                </div>
-            </div>
+            <Score />
         </main>
     </div>
 </template>
@@ -83,5 +86,10 @@ export default {
     }
     h2 {
         @apply font-bold text-xl italic;
+    }
+
+    .progress {
+        transition: all 1s;
+        @apply absolute left-0 top-0 h-full w-full;
     }
 </style>

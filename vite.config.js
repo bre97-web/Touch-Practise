@@ -13,4 +13,7 @@ export default defineConfig({
     }
   },
   base: 'Touch-Practise',
+  build: {
+    outDir: './docs',
+  }
 })
