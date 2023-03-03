@@ -10,12 +10,20 @@ export default {
 
 
 <template>
-    <div class="px-8 flex flex-col">
-        <header class="py-8">
+    <div class="px-8 flex flex-col max-h-screen">
+        <header class="mt-16">
             <Header />
         </header>
-        <main class="overflow-clip min-h-screen">
+        <main class="overflow-hidden">
             <router-view></router-view>
         </main>
     </div>
 </template>
+
+<style lang="css">
+    
+    /* 不允许页面上下滑动 */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+</style>

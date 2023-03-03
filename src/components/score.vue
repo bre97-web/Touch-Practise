@@ -19,17 +19,33 @@ export default {
 }
 </script>
 
-<template lang="">
-    <div class="w-full flex gap-16 items-center justify-center">
-        <div class="flex-grow">
+<template>
+    <div class="absolute bottom-5 left-0 px-16 w-full flex group">
+        <div class="title-left-group">
             <h1>COMBO</h1>
             <h1>SCORE</h1>
             <h1>RESULT</h1>
         </div>
-        <div>
+        <div enter-class="title-tight-group">
             <h1>{{ get.combo }}</h1>
             <h1>{{ get.score }}</h1>
             <h1>{{ get.result.toFixed(3) }}</h1>
         </div>
     </div>
 </template>
+
+<style scoped lang="css">
+    .title-left-group,
+    .title-right-group {
+        @apply flex flex-col;
+    }
+    .title-left-group {
+        @apply justify-start items-end;
+    }
+    .group {
+        @apply justify-evenly;
+    }
+    h1 {
+        @apply font-bold;
+    }
+</style>

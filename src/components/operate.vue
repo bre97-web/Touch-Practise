@@ -51,7 +51,7 @@ export default {
             if(this.isKey(e.keyCode)) {
                 this.apply(e.keyCode)
             }
-            e.preventDefault()
+            //e.preventDefault()
         }
     },
     beforeUnmount() {
@@ -61,7 +61,34 @@ export default {
 </script>
 
 <template>
-    <div>
+    <!-- 渐变背景 -->
+    <div class="w-full max-w-md h-full blur-3xl max-h-96 rounded-xl -z-10 absolute top-0 left-0 bg-colorful move" :class="{'bg-green-200': getFirst == 37, 'bg-red-200': getFirst == 38, 'bg-yellow-200': getFirst == 39, 'bg-blue-200': getFirst == 40}">
         
     </div>
 </template>
+
+<style scoped lang="css">
+    .bg-colorful {
+        transition: all 1s;
+        @apply bg-opacity-25;
+    }
+
+    .move {
+        animation: moveAn 120s infinite;
+    }
+    @keyframes moveAn {
+        from {
+            left: 0%;
+            top: 20%;
+        } 30% {
+            left: 50%;
+            top: 50%;
+        } 60% {
+            left: 70%;
+            top: 30%;
+        } to {
+            left: 0%;
+            top: 20%;
+        }
+    }
+</style>
