@@ -11,6 +11,7 @@ export default {
 <template>
 
     <div class="w-screen relative left-1/2 -ml-16">
+        <div class="absolute right-0 top-0 h-full w-full z-50 bg-gradient-to-r from-transparent via-slate-50 to-white blur-md">12</div>
         <ul>
             <li v-for="e in get">
                 <i class="material-icons" :class="{'bg-green-200': e == 37, 'bg-red-200': e == 38, 'bg-yellow-200': e == 39, 'bg-blue-200': e == 40}">

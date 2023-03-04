@@ -10,11 +10,11 @@ export default {
 
 
 <template>
-    <div class="px-8 flex flex-col max-h-screen overflow-hidden">
+    <div class="flex flex-col max-h-screen overflow-hidden">
         <header class="mt-16">
             <Header />
         </header>
-        <main class="overflow-hidden">
+        <main class="overflow-hidden px-4">
             <router-view></router-view>
         </main>
     </div>
