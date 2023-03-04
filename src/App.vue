@@ -10,7 +10,7 @@ export default {
 
 
 <template>
-    <div class="px-8 flex flex-col max-h-screen">
+    <div class="px-8 flex flex-col max-h-screen overflow-hidden">
         <header class="mt-16">
             <Header />
         </header>
@@ -21,8 +21,7 @@ export default {
 </template>
 
 <style lang="css">
-    
-    /* 不允许页面上下滑动 */
+    /* 不允许页面滑动 */
     ::-webkit-scrollbar {
         display: none;
     }

@@ -19,6 +19,10 @@ const Router = createRouter({
             path: '/space',
             component: () => import('../views/space.vue'),
         },
+        {
+            path: '/fourKey',
+            component: () => import('../views/fourKey.vue')
+        },
     ],
 })
 

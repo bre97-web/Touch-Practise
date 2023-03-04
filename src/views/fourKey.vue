@@ -4,6 +4,7 @@ import Next from '../components/next.vue'
 import Operate from '../components/operate.vue'
 import Score from '../components/score.vue'
 
+
 export default {
     components: {
         Next,
@@ -12,16 +13,25 @@ export default {
     },
     data() {
         return {
+            /**
+             * index作为每一组的指示器，正确的按下按键时index自增。
+             */
+            index: 1,
+
+            countdown: 10,
             isClose: false,
-            countdown: 30,
         }
     },
     computed: {
-        ...mapGetters('TouchStore', ['get']),
-        
+        /**
+         * get在组件初始化后调用一次，赋值给data中的list。
+         */
+        ...mapGetters('TouchStore', ['get', 'getFirst']),
+        ...mapGetters('ScoreStore', {'getScore': 'get'}),
+
         leftOffset() {
             return {
-                left: this.countdown * 3 - 100 + '%'
+                left: -100 + this.countdown*10 + '%'
             }
         },
     },
@@ -29,27 +39,38 @@ export default {
         countdown: {
             immediate: false,
             handler(value) {
-                if(value <= 0) {
-                    clearInterval(this.timer)
+                if(value > 10) {
+                    this.countdown = 10
+                }
+                if(value < 0) {
                     this.isClose = true
+                    this.countdown = 0
+                    clearInterval(this.timer)
                 }
             },
         },
         get: {
             deep: true,
             handler() {
-                if(this.get.length <= 16) {
-                    this.addition(48)
+                if(this.get.length <= 0) {
+                    this.addition(++this.index)
+                    this.countdown += 2
                 }
             },
         },
+        index: {
+            handler() {
+                if(this.index > 10) {
+                    this.index = 1
+                }
+            }
+        }
     },
     methods: {
-        ...mapActions('ScoreStore', ['set']),
         ...mapActions('TouchStore', ['create', 'addition', 'additionOther']),
     },
     beforeMount() {
-        this.create(64)
+        this.create(this.index)
     },
     mounted() {
         this.timer = setInterval(() => {
@@ -59,36 +80,34 @@ export default {
 }
 </script>
 
-<template>  
-    <div>  
-        <header> 
-            <h1>Limit Mode</h1>
-            <h2>30 sec</h2>
+<template>
+    <div>
+        <header>
+            <h1>FourKey Mode</h1>
+            <h2>No time limiter and four key</h2>
         </header>
 
-        <main>
+        <main class="overflow-clip flex flex-col gap-8">
             <Next :class="{'grayscale': countdown <= 0}" />
-            <Operate v-if="!isClose" />
-
             <div class="relative rounded-full h-10 overflow-clip">
                 <div class="progress" :class="{'bg-green-500': countdown > 20 && countdown <= 30, 'bg-orange-500': countdown > 10 && countdown <= 20, 'bg-red-500' : countdown <= 10}" :style="leftOffset"></div>
             </div>
-
+            <Operate />
             <Score />
         </main>
     </div>
 </template>
 
-<style scoped lang="css">
+
+<style lang="css" scoped>
     h1 {
         @apply font-black text-4xl;
     }
     h2 {
         @apply font-bold text-xl italic;
     }
-
     .progress {
-        transition: all 1s;
+        transition: all 2s;
         @apply absolute left-0 top-0 h-full w-full;
     }
 </style>

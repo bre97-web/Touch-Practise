@@ -51,7 +51,7 @@ export default {
             if(this.isKey(e.keyCode)) {
                 this.apply(e.keyCode)
             }
-            //e.preventDefault()
+            e.preventDefault()
         }
     },
     beforeUnmount() {
